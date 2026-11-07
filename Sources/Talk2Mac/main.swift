@@ -79,7 +79,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    @objc private func openConfig() { NSWorkspace.shared.open(Config.fileURL) }
+    @objc private func openConfig() {
+        // Le .json peut être associé à une app inattendue : on force TextEdit.
+        if let textEdit = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.TextEdit") {
+            NSWorkspace.shared.open([Config.fileURL], withApplicationAt: textEdit,
+                                    configuration: NSWorkspace.OpenConfiguration())
+        } else {
+            NSWorkspace.shared.open(Config.fileURL)
+        }
+    }
     @objc private func reload() { notify("Quitte et relance Talk2Mac pour appliquer la configuration.") }
 
     private func notify(_ msg: String) {

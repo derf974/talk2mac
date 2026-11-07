@@ -4,3 +4,4 @@ vendor/
 models/
 .DS_Store
 *.wav
+Resources/AppIcon.iconset/
