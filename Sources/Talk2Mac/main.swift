@@ -25,7 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(withTitle: "Ouvrir la configuration", action: #selector(openConfig), keyEquivalent: ",")
         menu.addItem(withTitle: "Recharger la configuration", action: #selector(reload), keyEquivalent: "r")
         menu.addItem(.separator())
-        menu.addItem(withTitle: "Quitter", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        menu.addItem(withTitle: "Quitter", action: #selector(quit), keyEquivalent: "q")
         menu.items.forEach { $0.target = self }
         statusItem.menu = menu
 
@@ -80,6 +80,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             await MainActor.run { self.busy = false; self.setIcon("mic") }
         }
     }
+
+    @objc private func quit() { NSApp.terminate(nil) }
 
     @objc private func showAbout() {
         NSApp.activate(ignoringOtherApps: true)
