@@ -1,0 +1,6 @@
+.build/
+build/
+vendor/
+models/
+.DS_Store
+*.wav
