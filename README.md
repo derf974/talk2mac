@@ -1,4 +1,6 @@
-# Talk2Mac
+<p align="center"><img src="docs/icon.png" width="128" alt="Talk2Mac"></p>
+
+<h1 align="center">Talk2Mac</h1>
 
 Dictée vocale pour macOS, pensée pour fonctionner **dans une VDI** (Windows App / RDP) :
 le texte est tapé via de vrais événements clavier, sans dépendre du presse-papiers partagé.

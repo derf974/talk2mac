@@ -21,6 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let menu = NSMenu()
         menu.addItem(withTitle: "Maintenir \(config.hotkey) pour dicter", action: nil, keyEquivalent: "")
         menu.addItem(.separator())
+        menu.addItem(withTitle: "À propos de Talk2Mac", action: #selector(showAbout), keyEquivalent: "")
         menu.addItem(withTitle: "Ouvrir la configuration", action: #selector(openConfig), keyEquivalent: ",")
         menu.addItem(withTitle: "Recharger la configuration", action: #selector(reload), keyEquivalent: "r")
         menu.addItem(.separator())
@@ -51,13 +52,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func startRecording() {
         guard !busy else { return }
-        do { try recorder.start(); setIcon("mic.fill"); log("enregistrement démarré") }
+        do { try recorder.start(); setIcon("mic.fill"); NSSound(named: "Tink")?.play(); log("enregistrement démarré") }
         catch { log("erreur micro: \(error)"); notify("Micro : \(error.localizedDescription)") }
     }
 
     private func stopAndType() {
         guard !busy, let wav = recorder.stop() else { return }
         busy = true
+        NSSound(named: "Pop")?.play()
         setIcon("ellipsis.circle")
         let size = (try? FileManager.default.attributesOfItem(atPath: wav.path)[.size] as? Int) ?? -1
         log("enregistrement arrêté, wav=\(size) octets, AX=\(AXIsProcessTrusted())")
@@ -77,6 +79,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
             await MainActor.run { self.busy = false; self.setIcon("mic") }
         }
+    }
+
+    @objc private func showAbout() {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.orderFrontStandardAboutPanel(options: [
+            .applicationName: "Talk2Mac",
+            .applicationVersion: "1.0",
+            .credits: NSAttributedString(string: "Dictée vocale locale (Whisper) qui fonctionne aussi dans une VDI.\nMaintiens \(config.hotkey), parle, relâche.")
+        ])
     }
 
     @objc private func openConfig() {
