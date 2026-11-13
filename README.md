@@ -33,7 +33,10 @@ Au premier lancement, accorde **Micro**, **Accessibilité** et **Surveillance de
 
 | Clé | Rôle |
 |---|---|
-| `hotkey` | `rightCommand`, `rightOption`, `rightControl`, `rightShift`, `fn` |
+| `hotkey` | `rightCommand`, `leftOption`, `fn`… ou `key:105` (F13). Plus simple : menu > **Définir le raccourci…** |
+| `touchBar` | indicateur sur la Touch Bar (rouge = enregistrement, orange = transcription, vert = envoyé) |
+| `sounds` | retours sonores on/off (aussi dans le menu) |
+| `startSound` / `stopSound` / `doneSound` / `errorSound` | sons système : début, fin d'enregistrement, texte tapé, erreur/rien compris |
 | `language` | `auto`, `fr`, `en` |
 | `whisperPath` / `modelPath` | chemins du binaire et du modèle |
 | `keyDelayMs` / `chunkSize` | cadence de frappe (à augmenter si la VDI perd des caractères) |

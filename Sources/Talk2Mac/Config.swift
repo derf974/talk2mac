@@ -3,7 +3,9 @@ import Foundation
 /// Configuration, chargée depuis ~/Library/Application Support/Talk2Mac/config.json
 /// (créée avec les valeurs par défaut au premier lancement).
 struct Config: Codable {
-    /// Touche push-to-talk : rightCommand, rightOption, rightControl, rightShift ou fn.
+    /// Touche push-to-talk : rightCommand, leftCommand, rightOption, leftOption, rightControl,
+    /// leftControl, rightShift, leftShift, fn, ou "key:<keyCode>" pour une autre touche (ex. F13).
+    /// Le plus simple : menu > « Définir le raccourci… ».
     var hotkey = "rightCommand"
     /// "auto", "fr" ou "en"
     var language = "auto"
@@ -17,6 +19,17 @@ struct Config: Codable {
     var fillers = ["euh", "euhh", "heu", "hum", "hmm", "mmh", "ben euh", "uh", "um", "uhm", "erm"]
     /// Remplacements (mot entendu -> mot voulu), insensible à la casse.
     var dictionary: [String: String] = [:]
+    /// Retours sonores (utile dans une VDI où l'on ne voit pas l'icône de la barre de menus).
+    var sounds = true
+    /// Indicateur visuel sur la Touch Bar (sans effet si le Mac n'en a pas).
+    var touchBar = true
+    /// Noms de sons système (Tink, Pop, Glass, Basso, Ping, Hero, Funk, Submarine…).
+    var startSound = "Tink"
+    var stopSound = "Pop"
+    /// Joué quand le texte vient d'être tapé.
+    var doneSound = "Glass"
+    /// Joué en cas d'erreur ou quand rien n'a été compris.
+    var errorSound = "Basso"
 
     init() {}
 
@@ -32,6 +45,12 @@ struct Config: Codable {
         chunkSize = try c.decodeIfPresent(Int.self, forKey: .chunkSize) ?? d.chunkSize
         fillers = try c.decodeIfPresent([String].self, forKey: .fillers) ?? d.fillers
         dictionary = try c.decodeIfPresent([String: String].self, forKey: .dictionary) ?? d.dictionary
+        sounds = try c.decodeIfPresent(Bool.self, forKey: .sounds) ?? d.sounds
+        touchBar = try c.decodeIfPresent(Bool.self, forKey: .touchBar) ?? d.touchBar
+        startSound = try c.decodeIfPresent(String.self, forKey: .startSound) ?? d.startSound
+        stopSound = try c.decodeIfPresent(String.self, forKey: .stopSound) ?? d.stopSound
+        doneSound = try c.decodeIfPresent(String.self, forKey: .doneSound) ?? d.doneSound
+        errorSound = try c.decodeIfPresent(String.self, forKey: .errorSound) ?? d.errorSound
     }
 
     static var directory: URL {
