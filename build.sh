@@ -7,6 +7,14 @@ APP=build/Talk2Mac.app
 rm -rf "$APP"; mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp .build/release/Talk2Mac "$APP/Contents/MacOS/"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/"
+# --bundle : embarque whisper-cli et le modèle dans l'app (pour le DMG autonome)
+if [[ "$1" == "--bundle" ]]; then
+  WHISPER=vendor/whisper.cpp/build/bin/whisper-cli
+  MODEL=models/ggml-small-q5_1.bin
+  [[ -x "$WHISPER" ]] || { echo "Manquant: $WHISPER (voir README)"; exit 1; }
+  [[ -f "$MODEL" ]] || { echo "Manquant: $MODEL"; exit 1; }
+  cp "$WHISPER" "$MODEL" "$APP/Contents/Resources/"
+fi
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

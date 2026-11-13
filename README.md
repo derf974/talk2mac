@@ -14,6 +14,23 @@ transcrit en local avec [whisper.cpp](https://github.com/ggml-org/whisper.cpp), 
 - Un modèle Whisper, par ex. `ggml-small-q5_1.bin`
 
 ## Installation
+
+### Option 1 : DMG (le plus simple)
+Ouvre `Talk2Mac.dmg`, glisse **Talk2Mac** dans **Applications**, lance-le. `whisper-cli` et le
+modèle sont embarqués dans l'app : rien d'autre à installer. Comme l'app n'est pas notarisée,
+au premier lancement : clic droit > **Ouvrir**.
+
+Pour générer le DMG (après avoir compilé whisper-cli et récupéré le modèle, voir ci-dessous) :
+```sh
+./package.sh   # -> build/Talk2Mac.dmg
+```
+
+### Option 2 : script d'installation depuis les sources
+```sh
+./install.sh   # compile whisper.cpp, télécharge le modèle, installe dans /Applications
+```
+
+### Option 3 : manuelle
 ```sh
 git clone --depth 1 https://github.com/ggml-org/whisper.cpp vendor/whisper.cpp
 cmake -S vendor/whisper.cpp -B vendor/whisper.cpp/build -DBUILD_SHARED_LIBS=OFF -DGGML_METAL=OFF  # sur Mac Apple Silicon, retire GGML_METAL=OFF

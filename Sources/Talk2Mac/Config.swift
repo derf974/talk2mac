@@ -70,6 +70,16 @@ struct Config: Codable {
         if cfg.modelPath.isEmpty {
             cfg.modelPath = directory.appendingPathComponent("ggml-small-q5_1.bin").path
         }
+        // Repli sur les ressources embarquées dans l'app (build packagé avec --bundle).
+        let fm = FileManager.default
+        if !fm.isExecutableFile(atPath: cfg.whisperPath),
+           let p = Bundle.main.path(forResource: "whisper-cli", ofType: nil) {
+            cfg.whisperPath = p
+        }
+        if !fm.fileExists(atPath: cfg.modelPath),
+           let p = Bundle.main.path(forResource: "ggml-small-q5_1", ofType: "bin") {
+            cfg.modelPath = p
+        }
         return cfg
     }
 
